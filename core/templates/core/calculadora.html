@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Avançada</title>
+  <link rel="stylesheet" href="{% static 'core/calculadora.css' %}">
+</head>
+<body>
+  <div class="main-wrapper">
+    <div class="calc-container">
+      <div class="display" id="display">{{ resultado|default:"0" }}</div>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" id="expressao" name="expressao">
+        <div class="grid">
+          <button type="button" class="btn btn-calc btn-clear" onclick="clearDisplay()">C</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('±')">±</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('%')">%</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('/')">÷</button>
+
+          <button type="button" class="btn btn-calc" onclick="append('7')">7</button>
+          <button type="button" class="btn btn-calc" onclick="append('8')">8</button>
+          <button type="button" class="btn btn-calc" onclick="append('9')">9</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('*')">×</button>
+
+          <button type="button" class="btn btn-calc" onclick="append('4')">4</button>
+          <button type="button" class="btn btn-calc" onclick="append('5')">5</button>
+          <button type="button" class="btn btn-calc" onclick="append('6')">6</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('-')">−</button>
+
+          <button type="button" class="btn btn-calc" onclick="append('1')">1</button>
+          <button type="button" class="btn btn-calc" onclick="append('2')">2</button>
+          <button type="button" class="btn btn-calc" onclick="append('3')">3</button>
+          <button type="button" class="btn btn-calc btn-op" onclick="append('+')">+</button>
+
+          <button type="button" class="btn btn-calc" onclick="append('0')">0</button>
+          <button type="button" class="btn btn-calc" onclick="append('.')">.</button>
+          <button type="submit" class="btn btn-calc btn-eq" style="grid-column: span 2" onclick="prepareExpression()">=</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="history-panel">
+      <div class="history-header">
+        <h3>🕒 Histórico</h3>
+        <form method="post" action="{% url 'apagar_historico' %}">
+          {% csrf_token %}
+          <button class="clear-history-btn" type="submit">🗑️</button>
+        </form>
+      </div>
+      <ul class="history-list" id="history-list">
+        {% if historico %}
+          {% for item in historico %}
+            <li>
+              <strong>{{ item.expressao }}</strong> = <strong>{{ item.resultado }}</strong><br>
+              <span class="timestamp">{{ item.data|time:"H:i" }}</span>
+            </li>
+          {% endfor %}
+        {% else %}
+          <li>Nenhuma operação realizada ainda.</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+<script>
+  let display = document.getElementById('display');
+  let expression = '{{ expressao|default:"" }}';
+  let lastResult = '{{ resultado|default:"" }}';
+  let resultadoMostrado = Boolean(lastResult);
+
+  function append(char) {
+    if (resultadoMostrado) {
+      // Se o usuário clicou num operador, começa com o resultado + operador
+      if ("+-*/÷×−%".includes(char)) {
+        expression = lastResult + char;
+      }
+      // Se clicou num número, começa nova expressão
+      else if ("0123456789.".includes(char)) {
+        expression = char;
+      }
+      resultadoMostrado = false;
+    } else {
+      if (char === '±') {
+        expression = expression.startsWith('-') ? expression.slice(1) : '-' + expression;
+      } else {
+        expression += char;
+      }
+    }
+
+    display.innerText = expression;
+  }
+
+  function clearDisplay() {
+    expression = '';
+    resultadoMostrado = false;
+    display.innerText = '0';
+  }
+
+  function prepareExpression() {
+    const sanitized = expression
+      .replace(/÷/g, '/')
+      .replace(/×/g, '*')
+      .replace(/−/g, '-')
+      .replace(/%/g, '/100');
+
+    document.getElementById('expressao').value = sanitized;
+    resultadoMostrado = true;
+  }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+body {
+  background: linear-gradient(135deg, #2b1055, #7597de);
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.login-box {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 15px;
+  width: 400px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+.voltar {
+  margin-top: 15px;
+  text-align: center;
+  color: white;
+}
+
+.voltar a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.voltar a:hover {
+  color: #7fcdff;
+  text-decoration: underline;
+}
+
+/* Alerta de erro (vermelho), com botão fechar e largura igual aos inputs */
+div.alert {
+  background-color: #ff4d4d !important;
+  color: white !important;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+  position: relative;
+  border: none;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+div.alert .closebtn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 20px;
+  cursor: pointer;
+}

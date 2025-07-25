@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="{% static 'core/cadastro.css' %}">
+</head>
+<body>
+  <div class="cadastro-box">
+    <h2>Crie sua conta</h2>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+
+      <label for="id_username">Usuário:</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div class="alert">{{ form.username.errors.0 }}</div>
+      {% endif %}
+
+      <label for="id_first_name">Primeiro nome:</label>
+      {{ form.first_name }}
+      {% if form.first_name.errors %}
+        <div class="alert">{{ form.first_name.errors.0 }}</div>
+      {% endif %}
+
+      <label for="id_email">Email:</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="alert">{{ form.email.errors.0 }}</div>
+      {% endif %}
+
+      <label for="id_senha">Senha:</label>
+      {{ form.senha }}
+      {% if form.senha.errors %}
+        <div class="alert">{{ form.senha.errors.0 }}</div>
+      {% endif %}
+
+      <label for="id_confirmar_senha">Confirmar senha:</label>
+      {{ form.confirmar_senha }}
+      {% if form.confirmar_senha.errors %}
+        <div class="alert">{{ form.confirmar_senha.errors.0 }}</div>
+      {% endif %}
+
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p class="voltar"><a href="{% url 'login' %}">← Voltar para login</a></p>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => alert.style.display = 'none');
+    }, 5000);
+  </script>
+</body>
+</html>
